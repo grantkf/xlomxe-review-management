@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xlomxe review management - Automated Google Review Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066FF;
+            --primary-dark: #0052CC;
+            --secondary: #FF6B00;
+            --success: #00C853;
+            --danger: #FF3B30;
+            --dark: #0A0E27;
+            --dark-alt: #1A1F3A;
+            --dark-card: #252B4A;
+            --text: #E8EAED;
+            --text-muted: #9BA3B4;
+            --border: #2D3554;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 2rem 4rem;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 0, 0.1), transparent 50%),
+                var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="%23667eea" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-60px); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Archivo', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            padding: 1rem 2.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Dashboard Section */
+        .dashboard {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.2);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .stat-value {
+            font-family: 'Archivo', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: var(--dark-alt);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Review List */
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .review-item {
+            background: var(--dark-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .review-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .review-author {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .review-date {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .stars {
+            color: #FFB800;
+            font-size: 1.2rem;
+        }
+
+        .review-text {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .review-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .review-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .review-btn.danger:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Campaign Card */
+        .campaign-item {
+            background: var(--dark-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .campaign-item:hover {
+            border-color: var(--primary);
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .campaign-status.active {
+            background: rgba(0, 200, 83, 0.2);
+            color: var(--success);
+        }
+
+        .campaign-status.paused {
+            background: rgba(255, 107, 0, 0.2);
+            color: var(--secondary);
+        }
+
+        .campaign-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .campaign-stat {
+            text-align: center;
+        }
+
+        .campaign-stat-value {
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .campaign-stat-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 8px;
+            background: var(--dark-alt);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* Automation Settings */
+        .automation-card {
+            background: var(--dark-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .automation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--dark);
+            transition: 0.4s;
+            border-radius: 34px;
+            border: 1px solid var(--border);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            background: var(--dark-alt);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-full {
+            flex: 1;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">⚡ xlomxe</div>
+            <ul class="nav-links">
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#automation">Automation</a></li>
+                <li><a href="#analytics">Analytics</a></li>
+            </ul>
+            <button class="nav-btn" onclick="showModal('newCampaign')">New Campaign</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Automate Your <span class="highlight">Google Reviews</span></h1>
+            <p>Collect, manage, and respond to customer reviews automatically. Boost your online reputation with AI-powered automation.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToDashboard()">View Dashboard</button>
+                <button class="btn-secondary" onclick="showModal('demo')">Watch Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="dashboard" id="dashboard">
+        <!-- Stats Grid -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Total Reviews</span>
+                    <div class="stat-icon" style="background: rgba(102, 126, 234, 0.2);">⭐</div>
+                </div>
+                <div class="stat-value">1,247</div>
+                <div class="stat-change positive">
+                    <span>↑ 23%</span>
+                    <span style="color: var(--text-muted);">vs last month</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Average Rating</span>
+                    <div class="stat-icon" style="background: rgba(255, 184, 0, 0.2);">📊</div>
+                </div>
+                <div class="stat-value">4.8</div>
+                <div class="stat-change positive">
+                    <span>↑ 0.3</span>
+                    <span style="color: var(--text-muted);">vs last month</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Response Rate</span>
+                    <div class="stat-icon" style="background: rgba(0, 200, 83, 0.2);">💬</div>
+                </div>
+                <div class="stat-value">98%</div>
+                <div class="stat-change positive">
+                    <span>↑ 12%</span>
+                    <span style="color: var(--text-muted);">vs last month</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Active Campaigns</span>
+                    <div class="stat-icon" style="background: rgba(255, 107, 0, 0.2);">🚀</div>
+                </div>
+                <div class="stat-value">8</div>
+                <div class="stat-change positive">
+                    <span>↑ 2</span>
+                    <span style="color: var(--text-muted);">new this week</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-content">
+            <!-- Recent Reviews -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Reviews</h2>
+                    <div class="card-actions">
+                        <button class="icon-btn" title="Filter">🔍</button>
+                        <button class="icon-btn" title="Export">📥</button>
+                    </div>
+                </div>
+
+                <div class="tab-container">
+                    <button class="tab active" onclick="switchTab('all')">All Reviews</button>
+                    <button class="tab" onclick="switchTab('pending')">Pending Response</button>
+                    <button class="tab" onclick="switchTab('responded')">Responded</button>
+                </div>
+
+                <div class="review-list" id="reviewList">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-author">
+                                <div class="avatar">JD</div>
+                                <div class="author-info">
+                                    <h4>John Davis</h4>
+                                    <span class="review-date">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p class="review-text">Outstanding service! The team was professional, responsive, and went above and beyond. Highly recommend to anyone looking for quality work.</p>
+                        <div class="review-actions">
+                            <button class="review-btn" onclick="respondToReview('auto')">Auto Respond</button>
+                            <button class="review-btn" onclick="showModal('respond')">Custom Response</button>
+                            <button class="review-btn">Mark as Read</button>
+                        </div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-author">
+                                <div class="avatar" style="background: var(--gradient-2);">SM</div>
+                                <div class="author-info">
+                                    <h4>Sarah Martinez</h4>
+                                    <span class="review-date">5 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p class="review-text">Great experience from start to finish. Everything was handled professionally and the results exceeded my expectations!</p>
+                        <div class="review-actions">
+                            <button class="review-btn" onclick="respondToReview('auto')">Auto Respond</button>
+                            <button class="review-btn" onclick="showModal('respond')">Custom Response</button>
+                            <button class="review-btn">Mark as Read</button>
+                        </div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-author">
+                                <div class="avatar" style="background: var(--gradient-3);">MJ</div>
+                                <div class="author-info">
+                                    <h4>Michael Johnson</h4>
+                                    <span class="review-date">1 day ago</span>
+                                </div>
+                            </div>
+                            <div class="stars">⭐⭐⭐⭐</div>
+                        </div>
+                        <p class="review-text">Very satisfied with the service. Quick turnaround and excellent communication throughout the process.</p>
+                        <div class="review-actions">
+                            <button class="review-btn" onclick="respondToReview('auto')">Auto Respond</button>
+                            <button class="review-btn" onclick="showModal('respond')">Custom Response</button>
+                            <button class="review-btn">Mark as Read</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div>
+                <!-- Active Campaigns -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <h2 class="card-title">Active Campaigns</h2>
+                        <button class="icon-btn" onclick="showModal('newCampaign')">+</button>
+                    </div>
+
+                    <div class="campaign-item">
+                        <div class="campaign-header">
+                            <div>
+                                <h4>Post-Purchase Review Request</h4>
+                                <span class="campaign-status active">Active</span>
+                            </div>
+                        </div>
+                        <div class="campaign-stats">
+                            <div class="campaign-stat">
+                                <div class="campaign-stat-value">342</div>
+                                <div class="campaign-stat-label">Sent</div>
+                            </div>
+                            <div class="campaign-stat">
+                                <div class="campaign-stat-value">87</div>
+                                <div class="campaign-stat-label">Collected</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-item">
+                        <div class="campaign-header">
+                            <div>
+                                <h4>Service Completion Follow-up</h4>
+                                <span class="campaign-status active">Active</span>
+                            </div>
+                        </div>
+                        <div class="campaign-stats">
+                            <div class="campaign-stat">
+                                <div class="campaign-stat-value">156</div>
+                                <div class="campaign-stat-label">Sent</div>
+                            </div>
+                            <div class="campaign-stat">
+                                <div class="campaign-stat-value">42</div>
+                                <div class="campaign-stat-label">Collected</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 27%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-item">
+                        <div class="campaign-header">
+                            <div>
+                                <h4>Monthly Customer Check-in</h4>
+                                <span class="campaign-status paused">Paused</span>
+                            </div>
+                        </div>
+                        <div class="campaign-stats">
+                            <div class="campaign-stat">
+                                <div class="campaign-stat-value">89</div>
+                                <div class="campaign-stat-label">Sent</div>
+                            </div>
+                            <div class="campaign-stat">
+                                <div class="campaign-stat-value">23</div>
+                                <div class="campaign-stat-label">Collected</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 26%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Automation Settings -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Automation</h2>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-header">
+                            <div>
+                                <h4>Auto-Response</h4>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">Automatically respond to reviews</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-header">
+                            <div>
+                                <h4>AI Response Generation</h4>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">Use AI to craft personalized responses</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-header">
+                            <div>
+                                <h4>Review Request Automation</h4>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">Send automated review requests</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="automation-card">
+                        <div class="automation-header">
+                            <div>
+                                <h4>Negative Review Alerts</h4>
+                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">Get notified of low ratings</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Custom Response -->
+    <div class="modal" id="respondModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Respond to Review</h3>
+                <p style="color: var(--text-muted);">Craft a personalized response to this customer</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Response Template</label>
+                <select class="form-select">
+                    <option>Thank you for positive review</option>
+                    <option>Address concern professionally</option>
+                    <option>Request more details</option>
+                    <option>Custom response</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Your Response</label>
+                <textarea class="form-textarea" placeholder="Thank you for taking the time to leave us a review..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary btn-full" onclick="hideModal('respond')">Cancel</button>
+                <button class="btn-primary btn-full" onclick="submitResponse()">Send Response</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for New Campaign -->
+    <div class="modal" id="newCampaignModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Campaign</h3>
+                <p style="color: var(--text-muted);">Set up an automated review collection campaign</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Campaign Name</label>
+                <input type="text" class="form-input" placeholder="e.g., Post-Purchase Follow-up">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Campaign Type</label>
+                <select class="form-select">
+                    <option>Email Campaign</option>
+                    <option>SMS Campaign</option>
+                    <option>QR Code Campaign</option>
+                    <option>Multi-Channel</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Send After</label>
+                <select class="form-select">
+                    <option>Immediately</option>
+                    <option>1 day</option>
+                    <option>3 days</option>
+                    <option>7 days</option>
+                    <option>Custom delay</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Message Template</label>
+                <textarea class="form-textarea" placeholder="Hi {customer_name}, thank you for your recent purchase..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary btn-full" onclick="hideModal('newCampaign')">Cancel</button>
+                <button class="btn-primary btn-full" onclick="createCampaign()">Create Campaign</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Demo -->
+    <div class="modal" id="demoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Watch Demo</h3>
+                <p style="color: var(--text-muted);">See ReviewFlow in action</p>
+            </div>
+            <div style="aspect-ratio: 16/9; background: var(--dark-alt); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 2rem 0;">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">▶️</div>
+                    <p style="color: var(--text-muted);">Demo video placeholder</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary btn-full" onclick="hideModal('demo')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function showModal(modalName) {
+            const modalMap = {
+                'respond': 'respondModal',
+                'newCampaign': 'newCampaignModal',
+                'demo': 'demoModal'
+            };
+            const modal = document.getElementById(modalMap[modalName]);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function hideModal(modalName) {
+            const modalMap = {
+                'respond': 'respondModal',
+                'newCampaign': 'newCampaignModal',
+                'demo': 'demoModal'
+            };
+            const modal = document.getElementById(modalMap[modalName]);
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Auto-respond to review
+        function respondToReview(type) {
+            if (type === 'auto') {
+                // Simulate auto-response
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    btn.textContent = '✓ Responded';
+                    btn.style.background = 'var(--success)';
+                    btn.style.borderColor = 'var(--success)';
+                    
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '';
+                        btn.style.borderColor = '';
+                        btn.disabled = false;
+                    }, 2000);
+                }, 1500);
+            }
+        }
+
+        // Submit custom response
+        function submitResponse() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.innerHTML = '<span class="loading"></span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                hideModal('respond');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                
+                // Show success notification (you can implement a toast notification)
+                alert('Response sent successfully!');
+            }, 1500);
+        }
+
+        // Create campaign
+        function createCampaign() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.innerHTML = '<span class="loading"></span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                hideModal('newCampaign');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                
+                alert('Campaign created successfully!');
+            }, 1500);
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Here you would filter the review list based on the tab
+            console.log('Switched to tab:', tabName);
+        }
+
+        // Scroll to dashboard
+        function scrollToDashboard() {
+            document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Animate progress bars on load
+        window.addEventListener('load', () => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
